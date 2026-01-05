@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Adoption</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: url('checkout.jpg') center center / cover no-repeat fixed;
+            padding: 20px;
+        }
+
+        .checkout-container {
+            max-width: 520px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e8f0fe;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .phone-link {
+            color: #4285f4;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .phone-link:hover {
+            color: #2b5fc7;
+        }
+
+        .adoption-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .adoption-highlight h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .adoption-highlight p {
+            font-size: 14px;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .free-tag {
+            background-color: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .order-summary {
+            margin-bottom: 25px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            font-size: 15px;
+            color: #4a5568;
+            align-items: center;
+        }
+
+        .summary-row.free-item {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .summary-row.free-item .free-badge {
+            background-color: #d1fae5;
+            color: #059669;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .summary-row.shipping {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        .summary-row.total {
+            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 18px;
+            border-top: 2px solid #e5e7eb;
+            padding-top: 18px;
+            margin-top: 10px;
+        }
+
+        .info-box {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #92400e;
+            line-height: 1.6;
+        }
+
+        .info-box strong {
+            color: #78350f;
+        }
+
+        .checkout-button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .checkout-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .paypal-button {
+            width: 100%;
+            background-color: #ffc439;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .paypal-button:hover {
+            background-color: #f0b429;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .checkout-container {
+                padding: 25px 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .adoption-highlight h2 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <div class="header">
+            <h1>Complete Adoption</h1>
+            <a href="tel:3105822240" class="phone-link">📞 310-582-2240</a>
+        </div>
+
+        <div class="adoption-highlight">
+            <h2>🐾 Thank you for choosing to adopt!</h2>
+            <p>You are giving a lovely pet a second chance at a happy home.</p>
+            <span class="free-tag">✨ Adoption fee waived</span>
+        </div>
+
+        <div class="order-summary">
+            <div class="summary-row free-item">
+                <span>🐕 Adoption fee</span>
+                <div>
+                    <span class="free-badge">FREE</span>
+                </div>
+            </div>
+            <div class="summary-row shipping">
+                <span>📦 Safe shipping fee</span>
+                <span>$9.00</span>
+            </div>
+            <div class="summary-row">
+                <span>💳 Estimated tax</span>
+                <span>$0.00</span>
+            </div>
+            <div class="summary-row total">
+                <span>TOTAL</span>
+                <span>$9.00</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>📋 Important note:</strong> The shipping fee covers secure packaging, veterinarian-supervised transport, and insurance for your pet during the journey to your home.
+        </div>
+
+        <button class="checkout-button" onclick="window.location.href='shipping.html'">
+            Pay & complete adoption
+        </button>
+
+       
+    </div>
+</body>
+</html>

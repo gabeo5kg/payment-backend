@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Stories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Background cho từng pet */
+        body.max-page { background-image: url('anh_max.jpg'); }
+        body.luna-page { background-image: url('anh_luna.jpg'); }
+        body.shadow-page { background-image: url('anh_shadow.jpg'); }
+        body.snow-page { background-image: url('anh_snow.jpg'); }
+        body.buddy-page { background-image: url('anh_buddy.jpg'); }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            color: #667eea;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .story-container {
+            max-width: 900px;
+            margin: 60px auto 40px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+            display: none;
+        }
+
+        .story-container.active {
+            display: block;
+        }
+
+        .story-header {
+            position: relative;
+            height: 600px;
+            background: #f0f0f0;
+            overflow: hidden;
+        }
+
+        .story-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            background: #f5f5f5;
+        }
+
+        .story-content {
+            padding: 60px 50px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(250,250,255,0.95) 100%);
+        }
+
+        .pet-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .pet-title h1 {
+            font-size: 3.5em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .pet-title .subtitle {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .pet-title .age {
+            font-size: 1.2em;
+            color: #888;
+        }
+
+        .story-section {
+            margin-bottom: 50px;
+        }
+
+        .story-section h2 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .story-section p {
+            color: #555;
+            font-size: 1.15em;
+            line-height: 2;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        .adopt-section {
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .adopt-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            border: none !important;
+            padding: 0;
+        }
+
+        .adopt-section p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .adopt-btn {
+            display: inline-block;
+            padding: 20px 60px;
+            color: white;
+            text-decoration: none;
+            border-radius: 35px;
+            font-weight: bold;
+            font-size: 1.3em;
+            transition: all 0.3s ease;
+        }
+
+        .adopt-btn:hover {
+            transform: scale(1.08);
+        }
+
+        /* MAX - Red theme */
+        #max-container .pet-title .subtitle,
+        #max-container .story-section h2,
+        #max-container .adopt-section h2 {
+            color: #FF6B6B;
+        }
+        #max-container .story-section h2 {
+            border-bottom: 4px solid #FF6B6B;
+        }
+        #max-container .adopt-section {
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(233, 236, 239, 0.9) 100%);
+        }
+        #max-container .adopt-btn {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+        #max-container .adopt-btn:hover {
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.6);
+        }
+
+        /* LUNA - Orange theme */
+        #luna-container .pet-title .subtitle,
+        #luna-container .story-section h2,
+        #luna-container .adopt-section h2 {
+            color: #FFA500;
+        }
+        #luna-container .story-section h2 {
+            border-bottom: 4px solid #FFA500;
+        }
+        #luna-container .adopt-section {
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(255, 248, 240, 0.9) 100%);
+        }
+        #luna-container .adopt-btn {
+            background: linear-gradient(135deg, #FFA500 0%, #FFB84D 100%);
+            box-shadow: 0 8px 25px rgba(255, 165, 0, 0.4);
+        }
+        #luna-container .adopt-btn:hover {
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.6);
+        }
+
+        /* SHADOW - Purple theme */
+        #shadow-container .pet-title .subtitle,
+        #shadow-container .story-section h2,
+        #shadow-container .adopt-section h2 {
+            color: #9B59B6;
+        }
+        #shadow-container .story-section h2 {
+            border-bottom: 4px solid #9B59B6;
+        }
+        #shadow-container .adopt-section {
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(243, 235, 250, 0.9) 100%);
+        }
+        #shadow-container .adopt-btn {
+            background: linear-gradient(135deg, #9B59B6 0%, #B370CF 100%);
+            box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4);
+        }
+        #shadow-container .adopt-btn:hover {
+            box-shadow: 0 10px 30px rgba(155, 89, 182, 0.6);
+        }
+
+        /* SNOW - Blue theme */
+        #snow-container .pet-title .subtitle,
+        #snow-container .story-section h2,
+        #snow-container .adopt-section h2 {
+            color: #3498DB;
+        }
+        #snow-container .story-section h2 {
+            border-bottom: 4px solid #3498DB;
+        }
+        #snow-container .adopt-section {
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(235, 245, 255, 0.9) 100%);
+        }
+        #snow-container .adopt-btn {
+            background: linear-gradient(135deg, #3498DB 0%, #5DADE2 100%);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+        #snow-container .adopt-btn:hover {
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.6);
+        }
+
+        /* BUDDY - Green theme */
+        #buddy-container .pet-title .subtitle,
+        #buddy-container .story-section h2,
+        #buddy-container .adopt-section h2 {
+            color: #2ECC71;
+        }
+        #buddy-container .story-section h2 {
+            border-bottom: 4px solid #2ECC71;
+        }
+        #buddy-container .adopt-section {
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(235, 255, 245, 0.9) 100%);
+        }
+        #buddy-container .adopt-btn {
+            background: linear-gradient(135deg, #2ECC71 0%, #58D68D 100%);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+        }
+        #buddy-container .adopt-btn:hover {
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .story-content {
+                padding: 40px 25px;
+            }
+            .pet-title h1 {
+                font-size: 2.5em;
+            }
+            .pet-title .subtitle {
+                font-size: 1.2em;
+            }
+            .story-header {
+                height: 400px;
+            }
+            .back-btn {
+                position: static;
+                display: inline-block;
+                margin-bottom: 20px;
+            }
+            .story-section h2 {
+                font-size: 1.6em;
+            }
+            .story-section p {
+                font-size: 1.05em;
+            }
+            .adopt-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="home.html" class="back-btn">← Back</a>
+
+    <!-- MAX'S STORY -->
+    <div id="max-container" class="story-container">
+        <div class="story-header">
+            <img src="photo_5_2025-12-24_13-32-02.jpg" alt="Max">
+        </div>
+        <div class="story-content">
+            <div class="pet-title">
+                <h1>Max</h1>
+                <div class="subtitle">White Fluffy Dog</div>
+                <div class="age">Gentle & Loyal Companion</div>
+            </div>
+            <div class="story-section">
+                <h2>📖 Max's Story</h2>
+                <p>Max is a gentle white fluffy dog who lives with deep affection and a kind of "loyalty" that means once he bonds with someone, he remembers them forever. Max's previous owner was a construction worker who moved from site to site. When he had to relocate to a new rental room, the landlord didn't allow pets. He tried everything for weeks: asking friends to help, searching for pet-friendly housing, reaching out to acquaintances... but ultimately couldn't keep Max. So he asked us to help find a good family to adopt Max and give him a stable home.</p>
+                <p>On the day Max was brought over, his owner only had an old, worn collar and a bag of leftover food—the kind of "whatever I have" gesture that showed how much he truly cared. Max doesn't make a fuss or bark unnecessarily. In the evenings, he often lies by the door or sits staring outside for long periods. Every time he hears a vehicle, he lifts his head as if waiting for his familiar person to return. Sometimes when called inside to sleep warmly, Max obediently follows, but his eyes still turn toward the door, as if trying to understand why he's sleeping somewhere different tonight.</p>
+                <p>Max doesn't need a wealthy home or fancy things—just a stable roof over his head, someone willing to love him, and the promise that he won't have to "move again." If you're looking for a gentle companion who listens well and simply wants to stay by your side, give Max a chance to truly belong somewhere.</p>
+            </div>
+            <div class="adopt-section">
+                <h2>💝 Give Max a Forever Home</h2>
+                <p>Max is waiting for someone who will love him and never let him go. If you can be that person, start your adoption journey today.</p>
+                <a href="checkout.html" class="adopt-btn">Adopt Max Now →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- LUNA'S STORY -->
+    <div id="luna-container" class="story-container">
+        <div class="story-header">
+            <img src="photo_2_2025-12-24_13-32-02.jpg" alt="Luna">
+        </div>
+        <div class="story-content">
+            <div class="pet-title">
+                <h1>Luna</h1>
+                <div class="subtitle">White Affectionate Cat</div>
+                <div class="age">Sweet & Clingy Companion</div>
+            </div>
+            <div class="story-section">
+                <h2>📖 Luna's Story</h2>
+                <p>Luna is a small, clean white cat who is incredibly affectionate—the type who seeks you out the moment you sit down, wanting to be held or curl up beside you. Her previous owner was a young professional who loved her dearly and took excellent care of her. But recently, the owner developed severe respiratory allergies (or someone in the household fell ill), and the doctor advised limiting pet dander in the living space to prevent flare-ups and long-term health issues. After much deliberation and many tears, the owner asked us to find Luna a proper adoptive family, not wanting to "temporarily rehome her and let her drift."</p>
+                <p>Luna was used to being pampered, so when she came to our place, she didn't act out—she just followed people around, as if afraid of being left behind again. There's one heartbreaking detail: whenever she sees someone carrying a bag or preparing to leave, Luna rushes over and clings tightly, standing in the doorway or wrapping around their legs, as if thinking "it's my turn to be taken away again." Just pick her up and hold her for a moment, and she quiets down immediately, nestling into your arm and breathing softly. It feels like Luna just needs a safe place where she can trust she'll be allowed to stay.</p>
+                <p>We're looking for a serious adoptive family for Luna—one that views pet ownership as a long-term commitment, not a "trial run." Luna would be perfect for someone who loves clingy cats, has a warm and peaceful home, and can spend time playing with her every day.</p>
+            </div>
+            <div class="adopt-section">
+                <h2>💝 Give Luna a Forever Home</h2>
+                <p>Luna is waiting for someone who will cherish her and promise she'll never have to leave again. If you can be that person, start your adoption journey today.</p>
+                <a href="checkout.html" class="adopt-btn">Adopt Luna Now →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHADOW'S STORY -->
+    <div id="shadow-container" class="story-container">
+        <div class="story-header">
+            <img src="photo_1_2025-12-24_15-04-58.jpg" alt="Shadow">
+        </div>
+        <div class="story-content">
+            <div class="pet-title">
+                <h1>Shadow</h1>
+                <div class="subtitle">Small White Shy Dog</div>
+                <div class="age">Timid but Loving Companion</div>
+            </div>
+            <div class="story-section">
+                <h2>📖 Shadow's Story</h2>
+                <p>Shadow is a small white dog, shy but very affectionate when treated gently. She was abandoned in front of a boarding house gate shortly after Lunar New Year—perhaps when her previous owner moved in a hurry or didn't have the means to bring her along. Neighbors felt sorry for her and fed her for a few days, but because Shadow was so timid and scared, and being so small, she was easily intimidated by larger dogs or at risk of running into traffic. The neighbors were worried and asked us to find a new home for her, as keeping her at the boarding house wasn't ideal and they feared Shadow might encounter danger.</p>
+                <p>When we first brought her home, Shadow was extremely shy. Any loud noise—a motorcycle starting, a door slamming hard, distant dog barks—would startle her, and she'd retreat to a corner, sitting curled up as if trying to protect herself. But here's the lovely part: if you sit down, don't rush, and call her name gently a few times, Shadow will slowly approach. She walks in small steps, pausing midway to listen to your voice, then comes close to your feet to sniff. When she trusts it's safe, she'll lie down beside you or let you pet her head—as if saying "I want to trust people so much, but I'm still afraid of being hurt again."</p>
+                <p>We're looking for a patient family for Shadow, willing to spend the first 1-2 weeks letting her adjust and shed her "shell of fear." Shadow doesn't need someone skilled in training or experienced with dogs—just someone gentle, who talks to her, doesn't yell, and lets her gain confidence gradually. If you're looking for a gentle, quiet friend who needs healing, give Shadow the chance to truly belong to a real home.</p>
+            </div>
+            <div class="adopt-section">
+                <h2>💝 Give Shadow a Forever Home</h2>
+                <p>Shadow is waiting for a patient person who will help her trust again. If you can be that gentle soul, start your adoption journey today.</p>
+                <a href="checkout.html" class="adopt-btn">Adopt Shadow Now →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SNOW'S STORY -->
+    <div id="snow-container" class="story-container">
+        <div class="story-header">
+            <img src="photo_3_2025-12-24_15-04-58.jpg" alt="Snow">
+        </div>
+        <div class="story-content">
+            <div class="pet-title">
+                <h1>Snow</h1>
+                <div class="subtitle">Gray Quiet Cat</div>
+                <div class="age">Reserved but Deeply Affectionate</div>
+            </div>
+            <div class="story-section">
+                <h2>📖 Snow's Story</h2>
+                <p>Snow is a gray cat, calm and very clean, the type who is "quiet but deeply affectionate." She was rescued from an old boarding house being demolished for reconstruction—when everyone moved out, several stray cats were left behind with nowhere to go. Snow's previous owner is unknown; she might have been someone's abandoned cat or a stray surviving on food people gave her. She's used to taking care of herself, so her temperament is very reserved, rarely meows, and always tries "not to cause trouble."</p>
+                <p>What makes anyone feel heartbroken is the way Snow eats. When multiple cats share a bowl, Snow rarely competes—she stands waiting nearby, watching others eat first, then approaches if there's anything left. Sometimes she's clearly hungry but still yields, eating a few bites then retreating to a corner as if afraid of taking up space. In the evenings, Snow often finds a hidden corner, lying curled up alone, not crying or making noise—as if she's used to "holding back to be left in peace" and doesn't want to bother anyone.</p>
+                <p>But if you're willing to sit down and let Snow come to you on her own (without forcing her to be held right away), she'll slowly approach to sniff your hand, then allow you to gently pet under her chin. That's when Snow's eyes soften, and she sighs as if to say "yes, this is nice, it's been so long since anyone treated me kindly." Snow isn't the clingy type who follows you all day, but she'll be very loyal to the person who makes her feel safe—every day she'll lie beside your desk or sit by the window looking out, like a small shadow quietly keeping you company.</p>
+                <p>We're looking for a quiet family for Snow with a stable routine, willing to take the time to let her adjust slowly. Snow is perfect for someone living alone or in a small household, who appreciates peace and doesn't need a cat to be playful to be joyful. In return, you'll have a very gentle, well-mannered cat who's deeply grateful.</p>
+            </div>
+            <div class="adopt-section">
+                <h2>💝 Give Snow a Forever Home</h2>
+                <p>Snow is waiting for a peaceful home where she can finally feel safe and cherished. If you can offer that quiet love, start your adoption journey today.</p>
+                <a href="checkout.html" class="adopt-btn">Adopt Snow Now →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUDDY'S STORY -->
+    <div id="buddy-container" class="story-container">
+        <div class="story-header">
+            <img src="photo_4_2025-12-24_13-32-02.jpg" alt="Buddy">
+        </div>
+        <div class="story-content">
+            <div class="pet-title">
+                <h1>Buddy</h1>
+                <div class="subtitle">Big Brown Cheerful Dog</div>
+                <div class="age">Loyal Guardian Companion</div>
+            </div>
+            <div class="story-section">
+                <h2>📖 Buddy's Story</h2>
+                <p>Buddy is a large brown dog, cheerful and with a strong "sense of responsibility"—the type who knows how to guard the gate, knows how to wait, and is very loyal to the place he's entrusted with. He used to live at a small workshop/repair shop, loved by everyone and fed regularly, with Buddy's job being to lie by the gate and greet regular customers. But recently the shop had to close—perhaps due to economic difficulties, change of location, or the shop owner returning to their hometown. Everyone loved Buddy, but no one had the means to take him along: some live in high-rise apartments, some already have dogs, some are moving far away. In the end, they asked us to help find a real family for Buddy, not wanting to "leave him somewhere to fend for himself."</p>
+                <p>What breaks anyone's heart is that Buddy still keeps his "gate-guarding" habit. Even after coming to our place, Buddy still looks for a spot near the gate or main door to lie down, eyes looking out as if he's on duty. Whenever someone passes by to feed him, he happily wags his tail, finishes eating, then runs back to his exact spot to lie down again—as if afraid that "if I leave this position, I'll lose my place to belong." One day when it rained heavily, Buddy still lay at the edge of the porch, half-soaked but refusing to go inside, as if he thought "guarding is the only way to be allowed to stay."</p>
+                <p>Buddy doesn't need to "guard" anymore—he needs a family who sees Buddy as a member, not a "guard dog to be replaced." He's perfect for a family with a yard, older people who need a walking companion in the early morning, or homes with young children because Buddy is very gentle and patient. If you want a loyal, cheerful dog friend who just needs simple love, give Buddy the chance to live as a friend, not an "employee security guard."</p>
+            </div>
+            <div class="adopt-section">
+                <h2>💝 Give Buddy a Forever Home</h2>
+                <p>Buddy is waiting for a family who will love him for who he is, not what he can do. If you can be that family, start your adoption journey today.</p>
+                <a href="checkout.html" class="adopt-btn">Adopt Buddy Now →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const petName = urlParams.get('pet');
+
+        // Show correct pet story based on URL parameter
+        const pets = ['max', 'luna', 'shadow', 'snow', 'buddy'];
+        
+        if (pets.includes(petName)) {
+            document.getElementById(`${petName}-container`).classList.add('active');
+            document.body.classList.add(`${petName}-page`);
+            document.title = `${petName.charAt(0).toUpperCase() + petName.slice(1)}'s Story`;
+        } else {
+            // Default to Max
+            document.getElementById('max-container').classList.add('active');
+            document.body.classList.add('max-page');
+            document.title = "Max's Story";
+        }
+    </script>
+</body>
+</html>

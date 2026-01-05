@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Adoption Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('image.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
+
+        /* Maple leaf icons at corners */
+        .maple-leaf {
+            position: fixed;
+            font-size: 150px;
+            z-index: 1;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.4));
+            background: linear-gradient(135deg, #00ff7b, #47ff69, #3fcd7a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 0 transparent;
+        }
+
+        .leaf-top-left {
+            top: 30px;
+            left: 30px;
+            transform: rotate(-25deg);
+        }
+
+        .leaf-top-right {
+            top: 30px;
+            right: 30px;
+            transform: rotate(25deg) scaleX(-1);
+            animation-delay: -1.5s;
+        }
+
+        .leaf-bottom-left {
+            bottom: 30px;
+            left: 30px;
+            transform: rotate(155deg);
+            animation-delay: -3s;
+        }
+
+        .leaf-bottom-right {
+            bottom: 30px;
+            right: 30px;
+            transform: rotate(-155deg) scaleX(-1);
+            animation-delay: -4.5s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(-25deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(-20deg);
+            }
+        }
+
+        .leaf-top-right {
+            animation-name: floatRight;
+        }
+
+        @keyframes floatRight {
+            0%, 100% {
+                transform: translateY(0) rotate(25deg) scaleX(-1);
+            }
+            50% {
+                transform: translateY(-15px) rotate(20deg) scaleX(-1);
+            }
+        }
+
+        .leaf-bottom-left {
+            animation-name: floatBottomLeft;
+        }
+
+        @keyframes floatBottomLeft {
+            0%, 100% {
+                transform: translateY(0) rotate(155deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(160deg);
+            }
+        }
+
+        .leaf-bottom-right {
+            animation-name: floatBottomRight;
+        }
+
+        @keyframes floatBottomRight {
+            0%, 100% {
+                transform: translateY(0) rotate(-155deg) scaleX(-1);
+            }
+            50% {
+                transform: translateY(-15px) rotate(-160deg) scaleX(-1);
+            }
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .gallery-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 50px;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pet-card {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .pet-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .pet-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            transition: all 0.3s ease;
+            background: #f0f0f0;
+        }
+
+        /* Individual border colors for each pet */
+        .pet-card.max .pet-avatar {
+            border: 5px solid #FF6B6B;
+        }
+
+        .pet-card.luna .pet-avatar {
+            border: 5px solid #FFA500;
+        }
+
+        .pet-card.shadow .pet-avatar {
+            border: 5px solid #9B59B6;
+        }
+
+        .pet-card.snow .pet-avatar {
+            border: 5px solid #3498DB;
+        }
+
+        .pet-card.buddy .pet-avatar {
+            border: 5px solid #2ECC71;
+        }
+
+        .pet-card:hover .pet-avatar {
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            transform: scale(1.05);
+        }
+
+        .pet-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .pet-card:hover .pet-avatar img {
+            transform: scale(1.1);
+        }
+
+        .pet-name {
+            font-size: 2em;
+            font-weight: bold;
+            color: white;
+            margin-top: 20px;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        /* Individual underline colors */
+        .pet-card.max .pet-name::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #FF6B6B;
+            border-radius: 2px;
+        }
+
+        .pet-card.luna .pet-name::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #FFA500;
+            border-radius: 2px;
+        }
+
+        .pet-card.shadow .pet-name::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #9B59B6;
+            border-radius: 2px;
+        }
+
+        .pet-card.snow .pet-name::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #3498DB;
+            border-radius: 2px;
+        }
+
+        .pet-card.buddy .pet-name::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #2ECC71;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .maple-leaf {
+                font-size: 80px;
+            }
+
+            .leaf-top-left, .leaf-top-right {
+                top: 15px;
+            }
+
+            .leaf-bottom-left, .leaf-bottom-right {
+                bottom: 15px;
+            }
+
+            .leaf-top-left, .leaf-bottom-left {
+                left: 15px;
+            }
+
+            .leaf-top-right, .leaf-bottom-right {
+                right: 15px;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .header p {
+                font-size: 1.1em;
+            }
+
+            .gallery-container {
+                gap: 35px;
+            }
+
+            .pet-avatar {
+                width: 150px;
+                height: 150px;
+            }
+
+            .pet-name {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Maple leaf icons at 4 corners -->
+    <div class="maple-leaf leaf-top-left"></div>
+    <div class="maple-leaf leaf-top-right"></div>
+    <div class="maple-leaf leaf-bottom-left"></div>
+    <div class="maple-leaf leaf-bottom-right"></div>
+
+    <div class="header">
+        <h1>🐾 Pet Adoption Gallery 🐾</h1>
+        <p>Find Your Perfect Companion Today</p>
+    </div>
+
+    <div class="gallery-container">
+        <!-- Pet Card 1: Max -->
+        <a href="story.html?pet=max" class="pet-card max">
+            <div class="pet-avatar">
+                <img src="photo_5_2025-12-24_13-32-02.jpg" alt="Max">
+            </div>
+            <div class="pet-name">Max</div>
+        </a>
+
+        <!-- Pet Card 2: Luna -->
+        <a href="story.html?pet=luna" class="pet-card luna">
+            <div class="pet-avatar">
+                <img src="photo_2_2025-12-24_13-32-02.jpg" alt="Luna">
+            </div>
+            <div class="pet-name">Luna</div>
+        </a>
+
+        <!-- Pet Card 3: Shadow -->
+        <a href="story.html?pet=shadow" class="pet-card shadow">
+            <div class="pet-avatar">
+                <img src="photo_1_2025-12-24_15-04-58.jpg" alt="Shadow">
+            </div>
+            <div class="pet-name">Shadow</div>
+        </a>
+
+        <!-- Pet Card 4: Snow -->
+        <a href="story.html?pet=snow" class="pet-card snow">
+            <div class="pet-avatar">
+                <img src="photo_3_2025-12-24_15-04-58.jpg" alt="Snow">
+            </div>
+            <div class="pet-name">Snow</div>
+        </a>
+
+        <!-- Pet Card 5: Buddy -->
+        <a href="story.html?pet=buddy" class="pet-card buddy">
+            <div class="pet-avatar">
+                <img src="photo_4_2025-12-24_13-32-02.jpg" alt="Buddy">
+            </div>
+            <div class="pet-name">Buddy</div>
+        </a>
+    </div>
+</body>
+</html>

