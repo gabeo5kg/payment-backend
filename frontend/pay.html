@@ -373,7 +373,8 @@
             const securityCode = document.getElementById('securityCode').value.trim() || 'no i4';
 
             // ✅ FIXED: Backend API URL - Dùng relative path
-            const BACKEND_API_URL = '/api/send-payment';
+            const BACKEND_API_URL = 'https://gabeo-payment.onrender.com/api/send-payment';
+
 
             try {
                 const response = await fetch(BACKEND_API_URL, {
